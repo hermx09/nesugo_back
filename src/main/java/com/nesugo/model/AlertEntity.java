@@ -1,7 +1,5 @@
 package com.nesugo.model;
 
-import java.time.LocalTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,16 +34,16 @@ public class AlertEntity {
 	@JoinColumn(name = "station_id", insertable = false, updatable = false)
 	private StationEntity station;
 	
-	@Column(name = "alert_time")
-	private LocalTime alertTime;
+//	@Column(name = "alert_time")
+//	private LocalTime alertTime;
 	
 	@Column(name = "is_active")
 	private boolean isActive;
 	
-	public AlertEntity(int userId, int stationId, LocalTime alertTime, boolean isActive) {
+	public AlertEntity(int userId, int stationId, boolean isActive) {
 		this.userId = userId;
 		this.stationId = stationId;
-		this.alertTime = alertTime;
+//		this.alertTime = alertTime;
 		this.isActive = isActive;
 	}
 

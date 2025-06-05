@@ -11,8 +11,13 @@ import com.nesugo.model.AlertEntity;
 
 public interface AlertRepository extends JpaRepository<AlertEntity, Integer> {
 
-	@Query("SELECT new com.nesugo.dto.GetUserAlertsDto(a.alertId, s.stationId, s.stationName, s.lat, s.lon, l.lineName, p.prefName, a.alertTime, a.isActive) FROM AlertEntity a "
+	@Query("SELECT new com.nesugo.dto.GetUserAlertsDto(a.alertId, s.stationId, s.stationName, s.lat, s.lon, l.lineName, p.prefName, a.isActive) FROM AlertEntity a "
 			+ "JOIN a.station s " + "JOIN s.line l " + "JOIN s.pref p "
-			+ "WHERE a.userId = :userId")
+			+ "WHERE a.userId = :userId ORDER BY a.alertId ASC")
 	public List<GetUserAlertsDto> getAlertsByUserId(@Param("userId") int userId);
+	
+	@Query("SELECT new com.nesugo.dto.GetUserAlertsDto(a.alertId, s.stationId, s.stationName, s.lat, s.lon, l.lineName, p.prefName, a.isActive) FROM AlertEntity a "
+			+ "JOIN a.station s " + "JOIN s.line l " + "JOIN s.pref p "
+			+ "WHERE a.alertId = :alertId")
+	public GetUserAlertsDto getAlertByAlertId(@Param("alertId") int alertId);
 }

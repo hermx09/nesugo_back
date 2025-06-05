@@ -1,6 +1,5 @@
 package com.nesugo.service;
 
-import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +17,18 @@ public class AlertService {
 	@Autowired
 	private AlertRepository alertRepository;
 
-	public int doInsertAlert(int userId, int stationId, LocalTime alertTime, boolean isActive) {
+	public GetUserAlertsDto doInsertAlert(int userId, int stationId, boolean isActive) {
 
-		AlertEntity alertEntity = new AlertEntity(userId, stationId, alertTime, isActive);
+		AlertEntity alertEntity = new AlertEntity(userId, stationId, isActive);
 		AlertEntity savedAlert = alertRepository.save(alertEntity);
 
-		return savedAlert.getAlertId();
+		return alertRepository.getAlertByAlertId(savedAlert.getAlertId());
 	}
-	
-	public void doModifyAlert(int alertId, int stationId, LocalTime alertTime, boolean isActive) {
+
+	public void doModifyAlert(int alertId, int stationId, boolean isActive) {
 		AlertEntity alertEntity = alertRepository.getById(alertId);
 		if (alertEntity != null) {
 	        alertEntity.setStationId(stationId);
-	        alertEntity.setAlertTime(alertTime);
 	        alertEntity.setActive(isActive);
 	        alertRepository.save(alertEntity);
 	    } else {

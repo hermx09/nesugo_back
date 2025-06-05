@@ -1,7 +1,5 @@
 package com.nesugo.dto;
 
-import java.time.LocalTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -16,6 +14,6 @@ public class GetUserAlertsDto {
 	private double lon;
 	private String lineName;
 	private String prefName;
-	private LocalTime alertTime;
+//	private LocalTime alertTime;
 	private boolean isActive;
 }

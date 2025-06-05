@@ -23,31 +23,41 @@ public class UserController {
 	UserService userService;
 
 	@PostMapping("/registUser")
-	public ResponseEntity<String> registUser(@RequestBody UserForm userForm) {
-		if (userService.doRegistUser(userForm.getUserName(), userForm.getEmail())) {
-			return ResponseEntity.status(HttpStatus.CREATED).body("ユーザー登録完了");
-		} else {
+	public ResponseEntity<?> registUser(@RequestBody UserForm userForm) {
+		if(!userService.doRegistUser(userForm.getUserName(), userForm.getPassword())) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("ユーザーネームが重複しています");
 		}
+		Optional<String> tokenOpt = userService.doLogin(userForm.getUserName(), userForm.getPassword(), userForm.isEnableAuth());
+			return ResponseEntity.ok().body(Collections.singletonMap("token", tokenOpt.get()));
 	}
-
-//	@PostMapping("/login")
-//	public ResponseEntity<String> loginUser(@RequestBody UserForm userForm) {
-//		if (userService.doLogin(userForm.getUserName())) {
-//			return ResponseEntity.ok().body("ログイン完了");
-//		} else {
-//			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("ユーザー名が一致しません");
-//		}
-//	}
 	
+//	@PostMapping("/registUser")
+//	public ResponseEntity<?> registUser(@RequestBody UserForm userForm) {
+//		if(!userService.doRegistUser(userForm.getUserName())) {
+//			return ResponseEntity.status(HttpStatus.CONFLICT).body("ユーザーネームが重複しています");
+//		}
+//		Optional<String> tokenOpt = userService.doLogin(userForm.getUserName());
+//			return ResponseEntity.ok().body(Collections.singletonMap("token", tokenOpt.get()));
+//	}
+
 	@PostMapping("/login")
 	public ResponseEntity<?> loginUser(@RequestBody UserForm userForm) {
-		Optional<String> tokenOpt = userService.doLogin(userForm.getUserName());
-		System.out.println(tokenOpt);
+		Optional<String> tokenOpt = userService.doLogin(userForm.getUserName(), userForm.getPassword(), userForm.isEnableAuth());
 		if (tokenOpt.isPresent()) {
 			return ResponseEntity.ok().body(Collections.singletonMap("token", tokenOpt.get()));
 		} else {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("ユーザー名が一致しません");
 		}
 	}
+	
+//	@PostMapping("/login")
+//	public ResponseEntity<?> loginUser(@RequestBody UserForm userForm) {
+//		Optional<String> tokenOpt = userService.doLogin(userForm.getUserName());
+//		System.out.println(tokenOpt);
+//		if (tokenOpt.isPresent()) {
+//			return ResponseEntity.ok().body(Collections.singletonMap("token", tokenOpt.get()));
+//		} else {
+//			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("ユーザー名が一致しません");
+//		}
+//	}
 }

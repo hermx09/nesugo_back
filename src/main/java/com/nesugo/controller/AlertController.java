@@ -30,15 +30,14 @@ public class AlertController {
 	}
 
 	@PostMapping("/insertAlert")
-	public int insertAlert(@RequestBody AlertForm alertForm) {
+	public GetUserAlertsDto insertAlert(@RequestBody AlertForm alertForm) {
 
-		return alertService.doInsertAlert(alertForm.getUserId(), alertForm.getStationId(), alertForm.getAlertTime(),
-				alertForm.isActive());
+		return alertService.doInsertAlert(alertForm.getUserId(), alertForm.getStationId(), alertForm.isActive());
 	}
 	
 	@PostMapping("/modifyAlert")
 	public ResponseEntity<String> modifyAlert(@RequestBody AlertForm alertForm) {
-		alertService.doModifyAlert(alertForm.getAlertId(), alertForm.getStationId(), alertForm.getAlertTime(), alertForm.isActive());
+		alertService.doModifyAlert(alertForm.getAlertId(), alertForm.getStationId(), alertForm.isActive());
 		return ResponseEntity.ok("OK");
 	}
 	
