@@ -8,5 +8,5 @@ public class UserForm {
 	private String userName;
 	private String email;
 	private String password;
-	private boolean isEnableAuth;
+	private Boolean isEnableAuth;
 }

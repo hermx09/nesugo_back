@@ -27,7 +27,7 @@ public class UserController {
 		if(!userService.doRegistUser(userForm.getUserName(), userForm.getPassword())) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("ユーザーネームが重複しています");
 		}
-		Optional<String> tokenOpt = userService.doLogin(userForm.getUserName(), userForm.getPassword(), userForm.isEnableAuth());
+		Optional<String> tokenOpt = userService.doLogin(userForm.getUserName(), userForm.getPassword(), userForm.getIsEnableAuth());
 			return ResponseEntity.ok().body(Collections.singletonMap("token", tokenOpt.get()));
 	}
 	
@@ -42,7 +42,7 @@ public class UserController {
 
 	@PostMapping("/login")
 	public ResponseEntity<?> loginUser(@RequestBody UserForm userForm) {
-		Optional<String> tokenOpt = userService.doLogin(userForm.getUserName(), userForm.getPassword(), userForm.isEnableAuth());
+		Optional<String> tokenOpt = userService.doLogin(userForm.getUserName(), userForm.getPassword(), userForm.getIsEnableAuth());
 		if (tokenOpt.isPresent()) {
 			return ResponseEntity.ok().body(Collections.singletonMap("token", tokenOpt.get()));
 		} else {
@@ -60,4 +60,12 @@ public class UserController {
 //			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("ユーザー名が一致しません");
 //		}
 //	}
+	
+	@PostMapping("/getUser")
+	public ResponseEntity<String> existUser(@RequestBody UserForm userForm){
+		if(userService.doExistUser(userForm.getUserName()).isPresent()) {
+			return ResponseEntity.ok().body(userForm.getUserName());
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ユーザーがみつかりません");
+	}
 }

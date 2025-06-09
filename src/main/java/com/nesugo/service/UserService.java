@@ -30,7 +30,7 @@ public class UserService {
 		userRepository.save(user);
 		return true;
 	}
-	
+
 //	public boolean doRegistUser(String userName) {
 //		if (userRepository.findByUserName(userName).isPresent()) {
 //			return false;
@@ -43,8 +43,7 @@ public class UserService {
 //		return true;
 //	}
 
-
-	public Optional<String> doLogin(String userName, String password, boolean isEnableAuth) {
+	public Optional<String> doLogin(String userName, String password, Boolean isEnableAuth) {
 		Optional<UserEntity> user = userRepository.findByUserName(userName);
 		if (user.isPresent() && (passwordEncoder.matches(password, user.get().getPassword()) || isEnableAuth)) {
 			String token = jwtUtil.generateToken(user.get().getUserName(), user.get().getUserId());
@@ -52,7 +51,10 @@ public class UserService {
 		}
 		return Optional.empty();
 	}
-	
+
+	public Optional<UserEntity> doExistUser(String userName) {
+		return userRepository.findByUserName(userName);
+	}
 //	public Optional<String> doLogin(String userName) {
 //		Optional<UserEntity> user = userRepository.findByUserName(userName);
 //		if (user.isPresent()) {
